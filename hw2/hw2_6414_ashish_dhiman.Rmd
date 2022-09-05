@@ -67,14 +67,11 @@ ggplot(df_tax, aes(Taxes, Sale.Price)) + #aes(x,y)
 
 $$
 From\ above, we\ have:\\
-$$
-$$
+$$ $$
 \hat{\beta}_0:= Intecept = 13.320,\\
-$$
-$$
+$$ $$
 \hat{\beta}_1:=Slope = 3.324,\ and\\
-$$
-$$
+$$ $$
 \hat{y} = \hat{\beta}_0 +\hat{\beta}_1 * x = 13.320 + 3.324 *x
 $$
 
@@ -119,17 +116,12 @@ sse/(nrow(df_tax)-2)
 ## Question 6: Least Square Estimate of beta0, beta1:
 
 $$
-\hat{\beta}_1 = \frac{(\sum_i{x_iy_i}) - n\overline{x}\overline{y}}{\sum_i{{x_i}^2} - n\overline{x}^2},\\$$
-$$
+\hat{\beta}_1 = \frac{(\sum_i{x_iy_i}) - n\overline{x}\overline{y}}{\sum_i{{x_i}^2} - n\overline{x}^2},\\$$ $$
 we\ have:\\
-$$
-$$
-\sum_i{x_iy_i} = 1697.8,\\$$
-$$
-n\overline{x}\overline{y} = n * \frac{\sum_i{x_i}}{n} * \frac{\sum_i{y_i}}{n},\\$$
-$$
-\sum_i{{x_i}^2} = 157.42,\\$$
-$$
+$$ $$
+\sum_i{x_iy_i} = 1697.8,\\$$ $$
+n\overline{x}\overline{y} = n * \frac{\sum_i{x_i}}{n} * \frac{\sum_i{y_i}}{n},\\$$ $$
+\sum_i{{x_i}^2} = 157.42,\\$$ $$
 n\overline{x}^2 = n * \frac{\sum_i{x_i}}{n} = \sum_i{x_i} = 14*(43/14)^2
 $$
 
@@ -154,10 +146,8 @@ print (paste("Intecept (or beta0)",beta0))
 ## Question 7: Calculate SSE
 
 $$
-SSE = SS_{yy} - \hat{\beta}_1SS_{xy},$$
-$$
-SS_{yy} = \sum_i{(y_i - \overline{y})^2} = \sum_i{y_i}^2 - n\overline{y}^2$$
-$$
+SSE = SS_{yy} - \hat{\beta}_1SS_{xy},$$ $$
+SS_{yy} = \sum_i{(y_i - \overline{y})^2} = \sum_i{y_i}^2 - n\overline{y}^2$$ $$
 SS_{xy} = (\sum_i{x_iy_i}) - n\overline{x}\overline{y}
 $$
 
