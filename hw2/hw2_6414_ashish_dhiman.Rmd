@@ -1,6 +1,6 @@
 ---
 title: "HW2_ISYE6414_ashish_dhiman"
-author: "Ashish Dhiman"
+author: "Ashish Dhiman | adhiman9@gatech.edu"
 date: "2022-09-04"
 output: pdf_document
 ---
@@ -38,14 +38,13 @@ dim(df_tax)
 ## Question 1: Scatter Plot
 
 ```{r}
-plot(x=df_tax$Taxes, y=df_tax$Sale.Price, type ="p", main = "Sales Price vs Annual Taxes (both in 10k USD)")
+title_i = "Sales Price vs Annual Taxes (both in 10k USD)"
+plot(x=df_tax$Taxes, y=df_tax$Sale.Price, type ="p",main = title_i)
 ```
 
 $\color{blue}{\text{From the above plot, a linear realationship between Sales Price and Taxes is apparent.}}$
 
 $\color{blue}{\text{The strength of the linear realtionship can also be tested with corealtion between x and y.}}$
-
-`{# {r} # plot(x=df_tax$Taxes, y=df_tax$Sale.Price, type ="p", main = "Sales Price vs Annual Taxes (both in 10k USD)") # abline(v=7, col="red", lwd = 4)`
 
 ```{r}
 print (paste("Corealtion on full data:",round(cor(df_tax$Taxes,df_tax$Sale.Price),2)))
@@ -68,8 +67,14 @@ ggplot(df_tax, aes(Taxes, Sale.Price)) + #aes(x,y)
 
 $$
 From\ above, we\ have:\\
+$$
+$$
 \hat{\beta}_0:= Intecept = 13.320,\\
+$$
+$$
 \hat{\beta}_1:=Slope = 3.324,\ and\\
+$$
+$$
 \hat{y} = \hat{\beta}_0 +\hat{\beta}_1 * x = 13.320 + 3.324 *x
 $$
 
@@ -81,20 +86,32 @@ $\color{blue}{\text{In this case, this implies for every 10k USD change in Taxes
 
 ## Question 4: Meaning of beta0 ($\hat{\beta}_0$):
 
-$\hat{\beta}_0$ implies the predicted value of y given x is zero. $\color{blue}{\text{In this case, this implies for 0 USD in taxes (let's assume), the the expected prices is 13,320 USD}}$
+$\hat{\beta}_0$ implies the predicted value of y given x is zero.
+
+$\color{blue}{\text{In this case, this implies for 0 USD in taxes (let's assume), the the expected prices is 13,320 USD}}$
 
 ## Question 5: value of s, $s^2$ and SSE:
 
-### SSE
+s and s\^2
+
+```{r}
+s_squared = sum(sapply(model0["residuals"], function(x) x^2))/(nrow(df_tax)-2)
+s_squared
+s_squared^0.5
+```
+
+### SSE from fitted values
 
 $SSE = \sum_{i \in all\ data\ points}([y_i - \hat{y}_i]^2)$
 
 ```{r}
 y_hat = fitted(model0)
-y_act = df_tax$Taxes
+y_act = df_tax$Sale.Price
 
 sse = sum((y_act - y_hat)^2)
-sse
+print (paste("sse is",sse))
+
+sse/(nrow(df_tax)-2)
 ```
 
 # Part 2
@@ -102,11 +119,17 @@ sse
 ## Question 6: Least Square Estimate of beta0, beta1:
 
 $$
-\hat{\beta}_1 = \frac{(\sum_i{x_iy_i}) - n\overline{x}\overline{y}}{\sum_i{{x_i}^2} - n\overline{x}^2},\\
+\hat{\beta}_1 = \frac{(\sum_i{x_iy_i}) - n\overline{x}\overline{y}}{\sum_i{{x_i}^2} - n\overline{x}^2},\\$$
+$$
 we\ have:\\
-\sum_i{x_iy_i} = 1697.8,\\
-n\overline{x}\overline{y} = n * \frac{\sum_i{x_i}}{n} * \frac{\sum_i{y_i}}{n},\\
-\sum_i{{x_i}^2} = 157.42,\\
+$$
+$$
+\sum_i{x_iy_i} = 1697.8,\\$$
+$$
+n\overline{x}\overline{y} = n * \frac{\sum_i{x_i}}{n} * \frac{\sum_i{y_i}}{n},\\$$
+$$
+\sum_i{{x_i}^2} = 157.42,\\$$
+$$
 n\overline{x}^2 = n * \frac{\sum_i{x_i}}{n} = \sum_i{x_i} = 14*(43/14)^2
 $$
 
@@ -116,7 +139,7 @@ num
 denom = 157.42 - (14*(43/14)^2)
 denom
 beta1 = num/denom
-beta1
+print (paste("Intecept (or beta0)",beta1))
 ```
 
 $$
@@ -125,14 +148,16 @@ $$
 
 ```{r}
 beta0 = (572/14) - beta1*(43/14)
-beta0
+print (paste("Intecept (or beta0)",beta0))
 ```
 
 ## Question 7: Calculate SSE
 
 $$
-SSE = SS_{yy} - \hat{\beta}_1SS_{xy},\\
-SS_{yy} = \sum_i{(y_i - \overline{y})^2} = \sum_i{y_i}^2 - n\overline{y}^2,\\
+SSE = SS_{yy} - \hat{\beta}_1SS_{xy},$$
+$$
+SS_{yy} = \sum_i{(y_i - \overline{y})^2} = \sum_i{y_i}^2 - n\overline{y}^2$$
+$$
 SS_{xy} = (\sum_i{x_iy_i}) - n\overline{x}\overline{y}
 $$
 
@@ -141,7 +166,7 @@ SS_yy = 23530 - 14 *((572/14))^2
 SS_xy = num #from ques7
 SSE = SS_yy - beta1 * SS_xy
 sigma2 = SSE/(14-2)
-sigma2
+print (paste("Sigma squared is",sigma2))
 ```
 
 ## Question 8: y for x =3.7
@@ -150,6 +175,6 @@ sigma2
 y_act = 46.1
 y_hat = beta0 + beta1 * 3.7
 residual = y_act - y_hat
-y_hat
-residual
+print (paste("Predicted Y value is",y_hat))
+print (paste("Corresponding Residual is",y_hat))
 ```
