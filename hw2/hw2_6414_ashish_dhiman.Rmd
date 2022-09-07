@@ -85,7 +85,11 @@ $\color{blue}{\text{In this case, this implies for every 10k USD change in Taxes
 
 $\hat{\beta}_0$ implies the predicted value of y given x is zero.
 
-$\color{blue}{\text{In this case, this implies for 0 USD in taxes (let's assume), the the expected prices is 13,320 USD}}$
+$\color{blue}{\text{In this case, this implies for 0 USD in taxes (let's assume), the the expected prices is 13,320 USD}}.$
+
+$\color{blue}{\text{This case is improbable but still possible, and would imply that the state has relaxed the tax rate to 0%}}.$
+
+This could be done by state to foster investment my individuals and firms.
 
 ## Question 5: value of s, $s^2$ and SSE:
 
@@ -156,6 +160,7 @@ SS_yy = 23530 - 14 *((572/14))^2
 SS_xy = num #from ques7
 SSE = SS_yy - beta1 * SS_xy
 sigma2 = SSE/(14-2)
+print (paste("SSE is",SSE))
 print (paste("Sigma squared is",sigma2))
 ```
 
@@ -166,5 +171,5 @@ y_act = 46.1
 y_hat = beta0 + beta1 * 3.7
 residual = y_act - y_hat
 print (paste("Predicted Y value is",y_hat))
-print (paste("Corresponding Residual is",y_hat))
+print (paste("Corresponding Residual is",residual))
 ```
