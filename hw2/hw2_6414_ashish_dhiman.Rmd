@@ -2,7 +2,10 @@
 title: "HW2_ISYE6414_ashish_dhiman"
 author: "Ashish Dhiman | adhiman9@gatech.edu"
 date: "2022-09-04"
-output: pdf_document
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -42,15 +45,15 @@ title_i = "Sales Price vs Annual Taxes (both in 10k USD)"
 plot(x=df_tax$Taxes, y=df_tax$Sale.Price, type ="p",main = title_i)
 ```
 
-$\color{blue}{\text{From the above plot, a linear realationship between Sales Price and Taxes is apparent.}}$
+$\color{blue}{\text{From the above plot, a linear realationship between Sales Price and Taxes is apparent}}$
 
-$\color{blue}{\text{The strength of the linear realtionship can also be tested with corealtion between x and y.}}$
+$\color{blue}{\text{The strength of the linear realtionship can also be tested with corealtion between x and y}}$
 
 ```{r}
 print (paste("Corealtion on full data:",round(cor(df_tax$Taxes,df_tax$Sale.Price),2)))
 ```
 
-$\color{blue}{\text{A corelation of 0.88 is pretty significant and supports strong linear realtionship between x and y.}}$
+$\color{blue}{\text{A corelation of 0.88 is pretty significant and supports strong linear realtionship between x and y}}$
 
 ## Question 2: Fit SLR
 
@@ -63,6 +66,10 @@ model0
 ggplot(df_tax, aes(Taxes, Sale.Price)) + #aes(x,y)
   geom_point() +
   stat_smooth(method = lm, se = FALSE)
+```
+
+```{r}
+summary(model0)
 ```
 
 $$
@@ -79,17 +86,17 @@ $$
 
 $\hat{\beta}_1$ implies the slope of the SLR line we have fit to the data. In other words, it tells us, the change recorded in y (on average) for every one unit of change in x.
 
-$\color{blue}{\text{In this case, this implies for every 10k USD change in Taxes, the Price goies up by 3,324 USD (on average).}}$
+$\color{blue}{\text{In this case, this implies for every 10k USD change in Taxes, the Price goies up by 3,324 USD \(on average\).}}$
 
 ## Question 4: Meaning of beta0 ($\hat{\beta}_0$):
 
 $\hat{\beta}_0$ implies the predicted value of y given x is zero.
 
-$\color{blue}{\text{In this case, this implies for 0 USD in taxes (let's assume), the the expected prices is 13,320 USD}}.$
+$\color{blue}{\text{In this case, this implies for 0 USD in taxes (let's assume), then the expected prices is 13,320 USD}}.$
 
-$\color{blue}{\text{This case is improbable but still possible, and would imply that the state has relaxed the tax rate to 0%}}.$
+$\color{blue}{\text{This case is improbable but still possible, and would imply that the state has relaxed the tax rate to 0\%}}.$
 
-This could be done by state to foster investment my individuals and firms.
+This could be done by the state to foster investment.
 
 ## Question 5: value of s, $s^2$ and SSE:
 
@@ -97,8 +104,10 @@ s and s\^2
 
 ```{r}
 s_squared = sum(sapply(model0["residuals"], function(x) x^2))/(nrow(df_tax)-2)
-s_squared
-s_squared^0.5
+sse = s_squared * (24-2)
+print (paste("Sigma is", s_squared^0.5))
+print (paste("Sigma^2 is", s_squared))
+print (paste("sse is", sse))
 ```
 
 ### SSE from fitted values
@@ -112,7 +121,7 @@ y_act = df_tax$Sale.Price
 sse = sum((y_act - y_hat)^2)
 print (paste("sse is",sse))
 
-sse/(nrow(df_tax)-2)
+print(paste("s^2 from fitted values",(sse/(nrow(df_tax)-2))))
 ```
 
 # Part 2
@@ -135,7 +144,7 @@ num
 denom = 157.42 - (14*(43/14)^2)
 denom
 beta1 = num/denom
-print (paste("Intecept (or beta0)",beta1))
+print (paste("Slope (or beta1)",beta1))
 ```
 
 $$

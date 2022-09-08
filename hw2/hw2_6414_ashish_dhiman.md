@@ -6,7 +6,7 @@
 
     head -5 ./6414\-HW2\-taxes.csv
 
-    ## ﻿"The following data are sale price, y ($10,000) and taxes, x ($10,000). ",
+    ## "The following data are sale price, y ($10,000) and taxes, x ($10,000). ",
     ## Sale Price,Taxes
     ## 25.9,4.9176
     ## 29.5,5.0208
