@@ -98,9 +98,11 @@ TukeyHSD(anova_v0)
 
 The above table gives the 95% CI for the 6 pairwise difference of means above.
 
-As expected from the box plot, c-b and d-c both have low p-values. Similarly, p-value for c-a is about 5%, hinting there is a slight difference in means, espcially for alpha \<6%.
+As expected from the box plot, **c-b and d-c both have low p-values, hinting at statistically significant mean difference between them**.
 
-While d-b has lowest absolute diff and the highest p-value.
+Similarly, p-value for c-a is about 5%, hinting there is a slight evidence of difference in means, especially for alpha = 6% confidence level.
+
+While d-b has lowest absolute diff and the highest p-value, implying no statistical evidence for diff. of means
 
 ### Question 5: Multiple Linear regression
 
@@ -125,6 +127,8 @@ summary(lr_model)
 
 From the above table we can have beta of the different predictors
 
+-   $\beta_{0} = 1946.80204$
+
 -   $\beta_{xray} = 0.03858$
 
 -   $\beta_{bed\_days} = 1.03939$
@@ -132,6 +136,8 @@ From the above table we can have beta of the different predictors
 -   $\beta_{length} = -413.75780$
 
 ### Question 6: Interpretation of each coefficient
+
+-   $\beta_{0} = 1946.80204$: This implies that when all the other predictors are 0, the expected monthly labor hours are 1946.80 hrs
 
 -   $\beta_{xray} = 0.03858$: This implies that with each unit monthly exposure of xray the expected monthly labor hours required increase by 0.03858, given rest of the predictors remain constant.
 
