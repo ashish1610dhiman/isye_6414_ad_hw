@@ -1,0 +1,195 @@
+---
+title: "HW4_ISYE6414_ashish_dhiman"
+author: "Ashish Dhiman | adhiman9@gatech.edu"
+date: "2022-10-06"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+setwd("~/data_projects/fall22_hw/isye6414_hw/hw4")
+```
+
+# Boxplot and ANOVA
+
+## Read Data and Summary
+
+```{bash}
+head -5 ./homework04data01.csv
+```
+
+```{r}
+data1 = read.csv("./homework04data01.csv",sep=",")
+dim(data1)
+summary(data1)
+```
+
+```{r}
+table(data1$Species)
+```
+
+### Question 1: Box Plots
+
+```{r}
+ggplot(data1, aes(x=Species, y=Length, fill=Species)) +
+    geom_boxplot() + ggtitle("Antler Length basis Species")
+```
+
+From the box plot above we see there is a significant overlap between the ranges of antler length between the different species. Hence, without further investigation, it is very difficult to conclude if there is a difference between the antler length among species.
+
+The box plot however, does give us an indication of possible differences:
+
+1.  Mean of c is larger than every one else
+2.  Mean of a and d are very similar
+
+### Question 2: ANOVA to test difference in mean with $\alpha = 0.05$
+
+```{r}
+anova_v0 = aov(Length ~ Species, data=data1)
+model.tables(anova_v0, type = "means")
+```
+
+Hypothesis test for equal means:
+
+$$
+H_0: \mu_a = \mu_b = \mu_c = \mu_d $$
+$$
+H_a: \text{Some means are different}
+$$
+
+```{r}
+summary(anova_v0)
+```
+
+From above table we see that the p-value is 8.58e-5. This is fairly smaller than 5%, thus we have sufficient statistical evidence to reject Null Hypothesis, i.e. All species have similar means
+
+### Question 3: Identify SSE, SSTr, MSE, MSTr
+
+From above table:
+
+-   SSE = 299.2
+
+-   SSTr = 90
+
+-   MSE = SSE/(N-k) = 299.2/81 = 3.694 (from table)
+
+    ```{r}
+    299.2/81
+    ```
+
+-   MSTr = SSTr/k-1 = 90.0/3 = 30.001 (from table)
+
+    ```{r}
+    90.0/3
+    ```
+
+### Question 4: Pairwise comparison of means
+
+```{r}
+TukeyHSD(anova_v0)
+```
+
+The above table gives the 95% CI for the 6 pairwise difference of means above.
+
+As expected from the box plot, c-b and d-c both have low p-values. Similarly, p-value for c-a is about 5%, hinting there is a slight difference in means, espcially for alpha \<6%.
+
+While d-b has lowest absolute diff and the highest p-value.
+
+### Question 5: Multiple Linear regression
+
+y: monthly labor hours required\
+
+x1: monthly X-ray exposures\
+
+x2: monthly occupied bed days\
+
+x3: average length of patients' stays (in days).
+
+```{r}
+data2 = read.csv("./homework04Hospital.csv",sep=",")
+dim(data2)
+summary(data2)
+```
+
+```{r}
+lr_model = lm(Hours ~ ., data = data2)
+summary(lr_model)
+```
+
+From the above table we can have beta of the different predictors
+
+-   $\beta_{xray} = 0.03858$
+
+-   $\beta_{bed\_days} = 1.03939$
+
+-   $\beta_{length} = -413.75780$
+
+### Question 6: Interpretation of each coefficient
+
+-   $\beta_{xray} = 0.03858$: This implies that with each unit monthly exposure of xray the expected monthly labor hours required increase by 0.03858, given rest of the predictors remain constant.
+
+-   $\beta_{bed\_days} = 1.03939$. Similarly with each unit increase in monthly occupied bed days the expected monthly labor hours required increase by 1.03939, given rest of the predictors remain constant.
+
+-   $\beta_{length} = -413.75780$ With each unit increase in average length of patients' stay (in days), the expected monthly labor hours required decrease by 413.7580, given rest of the predictors remain constant. The negative effect seems a little counter intuitive here, but might because with greater length of stay in hospital, the labor requirement is more spread out, but we need more information on data collection to identify this.
+
+```{r}
+test = lm(Hours ~ Length, data = data2)
+summary(test)
+```
+
+Thus in absence of other predictors, Length is postiively effecting y. Also note that the intercept value is negative here, and p-value has also changed.
+
+### Question 7: Hypothesis Test on BedDays
+
+$$
+H_0: \beta_{bed\_days} = 0\\ \quad
+H_a: \beta_{bed\_days} \ne 0\
+$$
+
+test statistic = 15.386
+
+Critical t value, from qt function
+
+```{r}
+print ("Upper tale t")
+qt(0.975, df = 12)
+print ("Lower tale t")
+qt(0.025, df = 12)
+```
+
+Thus are \|critical t value\| is 2.178813
+
+Now given out test statistic is significantly larger than critical upper tail t value, we have sufficient evidence to reject the null hypothesis and conclude that BedDays variable is a significant predictor, given all other predictor variables in the model.
+
+### Question 8: Hypothesis Test on Xray
+
+$$
+H_0: \beta_{xray} = 0\\ \quad
+H_a: \beta_{xray} \ne 0\
+$$
+
+For the above we have p-value as 0.01197 = 1.197% (this is two tailed probability here)
+
+For $\alpha = 5\%, p<\alpha$ Hence we can reject the null hypothesis in this case, and have sufficient statistical evidence to conclude that **Xray variable is a significant predictor**, given all other predictor variables in the model.
+
+However if our confidence level changes, i.e. for $\alpha = 1\%, p>\alpha$ Hence we can not reject the null hypothesis in this case, and conclude that **Xray variable is not a significant predictor**, given all other predictor variables in the model.
+
+### Question 8: Hypothesis Test on Length
+
+$$
+H_0: \beta_{length} = 0\\ \quad
+H_a: \beta_{length} \ne 0\
+$$
+
+For the above we have p-value as 0.00124 = 0.124% (this is two tailed probability here)
+
+For $\alpha = 5\%, p<\alpha$ Hence we can reject the null hypothesis in this case, and have sufficient statistical evidence to conclude that **length variable is a significant predictor**, given all other predictor variables in the model.
+
+Even for more stricter confidence level, i.e. for $\alpha = 1\%, p<\alpha$ Hence we can reject the null hypothesis again in this case, and conclude that **length variable is a significant predictor**, given all other predictor variables in the model.
